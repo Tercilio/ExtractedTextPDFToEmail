@@ -2,7 +2,7 @@
 
 This repository contains a RESTful API developed in [Python] for extracting the first 30 lines of a PDF file and sending them via email.
 
-## 1 - Requirements: *
+## 1 - Requirements:
   * [Python]
   * [Flask/Express] framework
   * [PyPDF2/pdfreader] library (for Python)
@@ -34,7 +34,7 @@ This repository contains a RESTful API developed in [Python] for extracting the 
   ````
 
 3.2 - Use a tool like [Postman] to send a POST request to the /upload endpoint with the PDF file and email address as form data:
-  A) REQUEST
+  * A) REQUEST
   ```http
     POST /upload
     Content-Type: multipart/form-data
@@ -43,9 +43,9 @@ This repository contains a RESTful API developed in [Python] for extracting the 
         "file": <pdf-file>,
         "email": "example@example.com"
     }
- ````
+  ````
 
-  B) REQUEST
+  * B) REQUEST
   ```json
     POST /upload
     Content-Type: multipart/form-data
@@ -54,11 +54,12 @@ This repository contains a RESTful API developed in [Python] for extracting the 
         "success": true,
       "message": "The email has been successfully sent to example@example.com"
     }
-  ````
+   ````
+
 4 - Folder Structure
-  `app.py`: Main application file.
-  `requirements.txt`: List of Python dependencies.
-  `README.md`: Instructions and documentation.
+  * `app.py`: Main application file.
+  * `requirements.txt`: List of Python dependencies.
+  * `README.md`: Instructions and documentation.
 
 License
-This project is licensed under the MIT License.
+* This project is licensed under the MIT License.
