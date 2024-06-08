@@ -29,7 +29,7 @@ mail = Mail(app)
 
 def send_email(subject, recipient, extracted_text):
     try:
-        # Criando a mensagem
+        # create mensagem
         msg = Message(subject, sender=app.config['MAIL_USERNAME'], recipients=[recipient])
 
         # HTML to style the extracted text
@@ -37,7 +37,7 @@ def send_email(subject, recipient, extracted_text):
         <html>
             <head>
                 <style>
-                    /* Estilos CSS para formatar o texto */
+                    /* Styles CSS for formated text */
                     body {{
                         font-family: Arial, sans-serif;
                         line-height: 1.6;
@@ -61,17 +61,17 @@ def send_email(subject, recipient, extracted_text):
             </head>
             <body>
                 <div class="container">
-                    <h1>Texto extraído do PDF</h1>
+                    <h1>Text extracted from PDF</h1>
                     <p>{extracted_text.replace('\n', '<br>')}</p>
                 </div>
             </body>
         </html>
         """
 
-        # Definindo o corpo da mensagem como HTML
+        # body html message
         msg.html = html_body
 
-        # Enviando o e-mail
+        # send email
         mail.send(msg)
         
         return True
@@ -80,9 +80,9 @@ def send_email(subject, recipient, extracted_text):
         return False
 
     
-    
+# Function to extract text from PDF
 def extract_text_from_pdf(file):
-    """Extracts text from the first 30 lines of a PDF file."""
+    
     pdf_reader = PdfReader(file)
     num_pages = len(pdf_reader.pages)
     extracted_text = ""
@@ -100,7 +100,7 @@ def extract_text_from_pdf(file):
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    """Endpoint to upload a PDF file and send extracted text via email."""
+    
     # Check if the file is part of the request
     if 'file' not in request.files:
         return jsonify({"success": False, "message": "File not found"}), 400
