@@ -1,11 +1,11 @@
 # RESTful API for PDF Email Extraction
 
-This repository contains a RESTful API developed in [Python/Node.js] for extracting the first 30 lines of a PDF file and sending them via email.
+This repository contains a RESTful API developed in [Python] for extracting the first 30 lines of a PDF file and sending them via email.
 
-## 1 - Requirements
-  [Python]
-  [Flask/Express] framework
-  [PyPDF2/pdfreader] library (for Python)
+## 1 - Requirements: *
+  * [Python]
+  * [Flask/Express] framework
+  * [PyPDF2/pdfreader] library (for Python)
 
 
 
