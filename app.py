@@ -1,8 +1,8 @@
 import logging
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_mail import Mail, Message
-from PyPDF2 import PdfReader
+import PyPDF2
 
 from credentials import mail_password, mail_username, mail_server, mail_port
 
@@ -29,49 +29,16 @@ mail = Mail(app)
 
 def send_email(subject, recipient, extracted_text):
     try:
-        # create mensagem
+        # Create message
         msg = Message(subject, sender=app.config['MAIL_USERNAME'], recipients=[recipient])
 
-        # HTML to style the extracted text
-        html_body = f"""
-        <html>
-            <head>
-                <style>
-                    /* Styles CSS for formated text */
-                    body {{
-                        font-family: Arial, sans-serif;
-                        line-height: 1.6;
-                        margin: 0;
-                        padding: 0;
-                    }}
-                    .container {{
-                        width: 80%;
-                        margin: 20px auto;
-                        padding: 20px;
-                        background-color: #f5f5f5;
-                        border-radius: 8px;
-                    }}
-                    h1 {{
-                        color: #333;
-                    }}
-                    p {{
-                        color: #555;
-                    }}
-                </style>
-            </head>
-            <body>
-                <div class="container">
-                    <h1>Text extracted from PDF</h1>
-                    <p>{extracted_text.replace('\n', '<br>')}</p>
-                </div>
-            </body>
-        </html>
-        """
+        # Render the HTML template with the extracted text
+        html_body = render_template('email_template.html', extracted_text=extracted_text.replace('\n', '<br>'))
 
-        # body html message
+        # Set the HTML body of the message
         msg.html = html_body
 
-        # send email
+        # Send email
         mail.send(msg)
         
         return True
@@ -79,11 +46,11 @@ def send_email(subject, recipient, extracted_text):
         logging.error(f"Erro ao enviar o e-mail: {str(e)}")
         return False
 
+
     
 # Function to extract text from PDF
 def extract_text_from_pdf(file):
-    
-    pdf_reader = PdfReader(file)
+    pdf_reader = PyPDF2.PdfReader(file)
     num_pages = len(pdf_reader.pages)
     extracted_text = ""
     
@@ -91,12 +58,16 @@ def extract_text_from_pdf(file):
         page = pdf_reader.pages[page_num]
         extracted_text += page.extract_text()
     
-    # Take the first 30 lines of text
-    lines = extracted_text.split('\n')[:30]
-    formatted_text = "\n".join(f"{i}. {line}" for i, line in enumerate(lines, start=1))
+    # Dividir o texto em linhas
+    lines = extracted_text.splitlines()
+    
+    # Selecionar as primeiras 30 linhas
+    primeiras_30_linhas = lines[:30]
+    
+    # Formatar as primeiras 30 linhas numeradas
+    formatted_text = "\n".join(f"{i}. {line}" for i, line in enumerate(primeiras_30_linhas, start=1))
     
     return formatted_text
-
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
